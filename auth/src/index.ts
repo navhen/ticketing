@@ -1,6 +1,8 @@
 import express from 'express';
 import { json } from 'body-parser';
 import 'express-async-errors';
+import mongoose from 'mongoose';
+
 
 import { currentUserRouter } from './routes/current-users';
 import { signinRouter } from './routes/signin';
@@ -29,6 +31,18 @@ app.get('/api/users/currentuser', (req, res) => {
 });
 */
 
-app.listen(11000, () => {
-    console.log('Listen port 11000!');
-});
+const startUP = async () => {
+    try {
+        await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+        console.log('Connected to mongdb');
+    } catch (err) {
+        console.log(err);
+    }
+
+    app.listen(11000, () => {
+        console.log('Listen port 11000!');
+    });
+};
+
+startUP();
+
